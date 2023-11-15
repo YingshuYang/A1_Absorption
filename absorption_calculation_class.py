@@ -150,42 +150,28 @@ class SpecialMatrix(object):
         as_d = self.a_Matrix(1,1)
         as_0 = self.inv_a_Matrix(1,0)
         
-        # M_1 = self.M_Matrix(1)
-        # M_2 = self.M_Matrix(2)
-        # M_3 = self.M_Matrix(3)
-        # M_4 = self.M_Matrix(4)       
+        M_1 = self.M_Matrix(1)
+        M_2 = self.M_Matrix(2)
+        M_3 = self.M_Matrix(3)
+        M_4 = self.M_Matrix(4)       
         
-        T_02 = multi_dot([a2_0,as_d,as_0,a0_0])
-        T_2inf = multi_dot([ainf_0,a4_d,a4_0,a3_d,a3_0,a2_d])
-        T_03 = multi_dot([a3_0,a2_d,a2_0,as_d,as_0,a0_0])
-        T_3inf = multi_dot([ainf_0,a4_d,a4_0,a3_d])
-        T_04 = multi_dot([a4_0,a3_d,a3_0,a2_d,a2_0,as_d,as_0,a0_0])
-        T_4inf = multi_dot([ainf_0,a4_d])  
+        # T_02 = multi_dot([a2_0,as_d,as_0,a0_0])
+        # T_2inf = multi_dot([ainf_0,a4_d,a4_0,a3_d,a3_0,a2_d])
+        # T_03 = multi_dot([a3_0,a2_d,a2_0,as_d,as_0,a0_0])
+        # T_3inf = multi_dot([ainf_0,a4_d,a4_0,a3_d])
+        # T_04 = multi_dot([a4_0,a3_d,a3_0,a2_d,a2_0,as_d,as_0,a0_0])
+        # T_4inf = multi_dot([ainf_0,a4_d])  
         T_05 = multi_dot([a5_0,a4_d,a4_0,a3_d,a3_0,a2_d,a2_0,as_d,as_0,a0_0])
         T_5inf = multi_dot([ainf_0,a5_d])          
-        # T_02 = multi_dot([a2_0,M_1,a0_0])
-        # T_2inf = multi_dot([ainf_0,M_4,M_3,a2_d])
-        # T_03 = multi_dot([a3_0,M_2,M_1,a0_0])
-        # T_3inf = multi_dot([ainf_0,M_4,a3_d])
-        # T_04 = multi_dot([a4_0,M_3,M_2,M_1,a0_0])
-        # T_4inf = multi_dot([ainf_0,a4_d])        
+        
+        T_02 = multi_dot([a2_0,M_1,a0_0])
+        T_2inf = multi_dot([ainf_0,M_4,M_3,a2_d])
+        T_03 = multi_dot([a3_0,M_2,M_1,a0_0])
+        T_3inf = multi_dot([ainf_0,M_4,a3_d])
+        T_04 = multi_dot([a4_0,M_3,M_2,M_1,a0_0])
+        T_4inf = multi_dot([ainf_0,a4_d])        
         return T_05,T_5inf,T_04, T_4inf, T_03, T_3inf, T_02, T_2inf
 
-
-    # def Transfer_Matrix_special_SN(self,excitedlayer):
-    #     as_d       = self.a_Matrix(1,1)
-    #     a_excite_0 = self.inv_a_Matrix(excitedlayer,0)     
-    #     T_SN = np.matmul(a_excite_0,as_d)
-    #     return T_SN
-
-    def Transfer_Matrix_special_SN(self,excitedlayer):
-        as_d       = self.a_Matrix(1,1)
-        a_excite_0 = self.inv_a_Matrix(excitedlayer,0) 
-        sn = as_d
-        for i in range(2,excitedlayer):
-            sn = np.matmul(self.M_Matrix(i),sn)
-        T_SN = np.matmul(a_excite_0,sn)
-        return T_SN 
 
     def E_field(self, material, position, fR, fL):
         ER = fR*np.exp(1j*self.omega*np.sqrt(self.epsilon[material]*self.mu)*self.z[position])
@@ -206,11 +192,6 @@ class SpecialMatrix(object):
         return f_xR,f_xL
         
         
-    # def f_x(self,t,f_R,f_L):
-    #     f_xR = t[0:,0,0]*f_R+t[0:,0,1]*f_L
-    #     f_xL = t[0:,1,0]*f_R+t[0:,1,1]*f_L
-    #     return f_xR,f_xL         
-
 
 
 
@@ -246,8 +227,7 @@ class Change_thickness(object):
             H_field_In = matrix.H_field(0,0,self.f_omega,0)
             Q_in  = (pi*E_field_In.real*H_field_In.real)+(pi*E_field_In.imag*H_field_In.imag)
             
-# f_2_R_noecho               = matrix.f_x(T_s2,f_s_R,f_s_L)[0]
-# f_2_L_noecho               = matrix.f_x(T_s2,f_s_R,f_s_L)[1]
+
     
             #layer1 === substrate
             f_1R, f_1L = matrix.f_x(T_0s,f_0R, f_0L)
@@ -316,115 +296,6 @@ class Change_thickness(object):
             Q_heatloss5.append(Q5)
             Q_income.append(Q_in)
         return Q_heatloss1,Q_heatloss2,Q_heatloss3,Q_heatloss4,Q_heatloss5,Q_income
-
-
-
-    #   ##removed echo
-    # def heatloss(self,dnew,number_of_thickness):
-    #     Q_heatloss1 = []
-    #     Q_heatloss2 = []
-    #     Q_heatloss3 = []
-    #     Q_heatloss4 = []
-    #     Q_heatloss5 = []
-    #     Q_income = []
-    #     for i in range(number_of_thickness):
-    #         d      = dnew[i]
-    #         matrix       = SpecialMatrix(self.omega,self.mu,self.epsilon,d)
-    #         T_0s, T_sinf, T_0inf                     = matrix.Transfer_Matrix()      
-    #         r        = matrix.Reflection_coeff(T_0inf)
-    #         # t        = matrix.Transmission_coeff(T_0inf)
-    #         f_0R   = self.f_omega
-    #         f_0L   = self.f_omega*r
-
-            
-    #         t_0s                = matrix.Transmission_coeff(T_0s)
-    #         r_sinf              = matrix.Reflection_coeff(T_sinf)
-            
-    #         T_s2 = matrix.Transfer_Matrix_special_SN(2)
-    #         T_s3 = matrix.Transfer_Matrix_special_SN(3)
-    #         T_s4 = matrix.Transfer_Matrix_special_SN(4)
-    #         T_s5 = matrix.Transfer_Matrix_special_SN(5)
-            
-    #         f_s_R = self.f_omega*t_0s
-    #         f_s_L = f_s_R*r_sinf
-            
-            
- 
-            
-    #         # Income energy flux                          
-    #         E_field_In = matrix.E_field(0,0,self.f_omega,0)
-    #         H_field_In = matrix.H_field(0,0,self.f_omega,0)
-    #         Q_in  = (pi*E_field_In.real*H_field_In.real)+(pi*E_field_In.imag*H_field_In.imag)
-            
-
-    
-    #         #layer1 === substrate
-    #         f_1R, f_1L = matrix.f_x(T_0s,f_0R, f_0L)
-    #         E_field_01 = matrix.E_field(1,0,f_1R,f_1L)
-    #         H_field_01 = matrix.H_field(1,0,f_1R,f_1L)
-    #         E_field_d1 = matrix.E_field(1,1,f_1R,f_1L)
-    #         H_field_d1 = matrix.H_field(1,1,f_1R,f_1L)
-    #         Q1 = (pi*E_field_01.real*H_field_01.real)+(pi*E_field_01.imag*H_field_01.imag)-(pi*E_field_d1.real*H_field_d1.real)-(pi*E_field_d1.imag*H_field_d1.imag)
-    #         # Q1 = heat_loss(self.omega, self.epsilon[1], self.mu, f_1R, f_1L,0,d[1])
-
-      
-            
-            
-    
-    #         #layer2
-    #         f_2R, f_2L = matrix.f_x(T_s2,f_s_R,f_s_L)
-    #         E_field_02 = matrix.E_field(2,0,f_2R,f_2L)
-    #         H_field_02 = matrix.H_field(2,0,f_2R,f_2L)
-    #         E_field_d2 = matrix.E_field(2,2,f_2R,f_2L)
-    #         H_field_d2 = matrix.H_field(2,2,f_2R,f_2L)
-    #         Q2 = (pi*E_field_02.real*H_field_02.real)+(pi*E_field_02.imag*H_field_02.imag)-(pi*E_field_d2.real*H_field_d2.real)-(pi*E_field_d2.imag*H_field_d2.imag)
-    #         # Q2 = heat_loss(self.omega, self.epsilon[2], self.mu, f_2R, f_2L,0,d[2])
-
-
-
-
-                        
-    #         #layer3
-    #         f_3R, f_3L = matrix.f_x(T_s3,f_s_R,f_s_L)
-    #         E_field_03 = matrix.E_field(3,0,f_3R,f_3L)
-    #         H_field_03 = matrix.H_field(3,0,f_3R,f_3L)
-    #         E_field_d3 = matrix.E_field(3,3,f_3R,f_3L)
-    #         H_field_d3 = matrix.H_field(3,3,f_3R,f_3L)
-    #         Q3 = (pi*E_field_03.real*H_field_03.real)+(pi*E_field_03.imag*H_field_03.imag)-(pi*E_field_d3.real*H_field_d3.real)-(pi*E_field_d3.imag*H_field_d3.imag)
-    #         # Q3 = heat_loss(self.omega, self.epsilon[3], self.mu, f_3R, f_3L,0,d[3])
-            
-
-            
-            
-            
-    #         #layer4
-    #         f_4R, f_4L = matrix.f_x(T_s4,f_s_R,f_s_L)
-    #         E_field_04 = matrix.E_field(4,0,f_4R,f_4L)
-    #         H_field_04 = matrix.H_field(4,0,f_4R,f_4L)
-    #         E_field_d4 = matrix.E_field(4,4,f_4R,f_4L)
-    #         H_field_d4 = matrix.H_field(4,4,f_4R,f_4L)
-    #         Q4 = (pi*E_field_04.real*H_field_04.real)+(pi*E_field_04.imag*H_field_04.imag)-(pi*E_field_d4.real*H_field_d4.real)-(pi*E_field_d4.imag*H_field_d4.imag)
-    #         # Q4 = heat_loss(self.omega, self.epsilon[4], self.mu, f_4R, f_4L,0,d[4])
-
-
-
-    #         #layer5
-    #         f_5R, f_5L = matrix.f_x(T_s5,f_s_R,f_s_L)
-    #         E_field_05 = matrix.E_field(5,0,f_5R,f_5L)
-    #         H_field_05 = matrix.H_field(5,0,f_5R,f_5L)
-    #         E_field_d5 = matrix.E_field(5,5,f_5R,f_5L)
-    #         H_field_d5 = matrix.H_field(5,5,f_5R,f_5L)
-    #         Q5 = (pi*E_field_05.real*H_field_05.real)+(pi*E_field_05.imag*H_field_05.imag)-(pi*E_field_d5.real*H_field_d5.real)-(pi*E_field_d5.imag*H_field_d5.imag)
-    #         # Q4 = heat_loss(self.omega, self.epsilon[4], self.mu, f_4R, f_4L,0,d[4])
-
-            
-    #         Q_heatloss1.append(Q1)
-    #         Q_heatloss2.append(Q2)
-    #         Q_heatloss3.append(Q3)
-    #         Q_heatloss4.append(Q4)
-    #         Q_heatloss5.append(Q5)
-    #         Q_income.append(Q_in)
-    #     return Q_heatloss1,Q_heatloss2,Q_heatloss3,Q_heatloss4,Q_heatloss5,Q_income
 
 
 
@@ -511,35 +382,7 @@ class Change_thickness(object):
 
 
 
-# # removed echo
-#     def transmission_heat(self,dnew,number_of_thickness):
-#         Q_transmission = []
-#         Q_income = []
-#         for i in range(number_of_thickness):
-#             d      = dnew[i]
-#             matrix       = SpecialMatrix(self.omega,self.mu,self.epsilon,d)
-#             T_0s, T_sinf, T_0inf                     = matrix.Transfer_Matrix()
-            
 
-#             t_0s                = matrix.Transmission_coeff(T_0s)
-#             t_sinf              = matrix.Transmission_coeff(T_sinf)
-#             t                   = matrix.Transmission_coeff(T_0inf)
-#             t_noecho            = np.multiply(t_0s,t_sinf) 
-                                        
-#             E_field_In = matrix.E_field(0,0,self.f_omega,0)
-#             H_field_In = matrix.H_field(0,0,self.f_omega,0)
-#             Q_in  = (pi*E_field_In.real*H_field_In.real)+(pi*E_field_In.imag*H_field_In.imag)
-            
-
-#             f_T = self.f_omega*t_noecho
-#             E_trans = matrix.E_field(0,0,f_T,0)
-#             H_trans = matrix.H_field(0,0,f_T,0)
-#             Q_trans = (pi*E_trans.real*H_trans.real)+(pi*E_trans.imag*H_trans.imag)
-            
-#             Q_transmission.append(Q_trans)
-#             Q_income.append(Q_in)            
-    
-        return Q_transmission,Q_income
 
 
     def transmission(self,dnew,number_of_thickness):
