@@ -36,8 +36,8 @@ f_omega_single  = 10   #the freq amp we set manully
 
 
 eps_Air         = 1   
-eps_1           = cla2.epsilon(3.3,	4.8)             
-eps_2           = cla2.epsilon(1.5,	0.0000049)    
+eps_1           = cla2.epsilon(3.8,	3.89)             
+eps_2           = cla2.epsilon(1.4608,	0.0013066)    
 eps_3           = cla2.epsilon(1,	0)                  
 eps_4           = cla2.epsilon(1,	0)                     
 eps_5           = cla2.epsilon(1,	0)               #
@@ -46,20 +46,23 @@ mu              = 12.57e-7
 
 
 
-d1 = 100e-9
-d2 = 0.5e-3
+d1min = 0.00001e-9; d1max = 100e-9#d1 = 100e-9
+d2 = 0.3e-3
 d3 = 0
 d4 = 0
 d5 = 0
-number_of_thickness = 1
+number_of_thickness = 20
+
+
+
 ##########################################################################
 
 
 
 
 ZERO            = np.linspace(0,0,number_of_thickness)
-LAYER1          = np.linspace(d1,d1,number_of_thickness)
-LAYER2          = np.linspace(d2,d1,number_of_thickness)       
+LAYER1          = np.linspace(d1min,d1max,number_of_thickness)
+LAYER2          = np.linspace(d2,d2,number_of_thickness)       
 LAYER3          = np.linspace(d3,d3,number_of_thickness)         
 LAYER4          = np.linspace(d4,d4,number_of_thickness)
 LAYER5          = np.linspace(d5,d5,number_of_thickness)
@@ -77,21 +80,14 @@ Total           = reflection+transmission+Absorption_total
 Absorp          = 1-reflection-transmission
 r,t             = change_Pt_thickness.trans_reflect(dnew,number_of_thickness)
 
-atran_heat,atrans_in = change_Pt_thickness.transmission_heat(dnew,number_of_thickness)
 
-matrix       = cla2.SpecialMatrix(omega_single,mu,epsilon_optical,dnew[0])
-T_0s, T_sinf, T_0inf                     = matrix.Transfer_Matrix()
-at        = matrix.Transmission_coeff(T_0inf)#(-0.2126720162058721+0.7503224950023671j)
-t_os        = matrix.Transmission_coeff(T_0s)#(-0.258334517143757+0.928450239723685j)
-t_sinf        = matrix.Transmission_coeff(T_sinf)
-at_noecho =np.multiply(t_os, t_sinf) 
-
-atran = f_omega_single*at/f_omega_single
-atran_noecho =f_omega_single*at_noecho/f_omega_single 
-
-
-
-
+plt.figure('test')
+plt.plot(LAYER1,transmission,label = 'transmission')
+plt.plot(LAYER1,reflection,label = 'reflection')
+plt.plot(LAYER1,Absorption_total,label = 'absorption total')
+plt.plot(LAYER1,Absorption1,'--',label = 'absorption CoFeB')
+plt.ylim(0,1)
+plt.legend()
 
 print('Results')
 print('Absorption_layer1 = ', Absorption1)
