@@ -1,4 +1,4 @@
-# A1_Absorption
+# Multi-Layer Optical Laser Absorption Analysis
 
 ## Overview
 `A1_Absorption` is a computational tool designed to analyze the absorption of laser light within multilayer systems using the Transfer Matrix Method (TMM) and the Poynting theorem. This software enables the calculation of reflection, transmission, and total absorption rates for multilayer structures. Additionally, it offers detailed insights into the absorption of each individual layer within the system.
@@ -37,5 +37,5 @@ If you utilize `A1_Absorption` for your research, please cite the following publ
 - **Inputs**: Before running calculations, please refer to the comments within each main file for guidance on the required inputs.
 
 ## Future Developments
-We are committed to enhancing the usability of `A1_Absorption` and are currently working on developing a Graphical User Interface (GUI) to make the tool more accessible and user-friendly. Although the GUI is still under development, we aim to provide an intuitive interface that will simplify the process of configuring and running analyses. Stay tuned for updates on this exciting feature!
-
+- We are committed to enhancing the usability of `A1_Absorption` and are currently working on developing a Graphical User Interface (GUI) to make the tool more accessible and user-friendly. Although the GUI is still under development, we aim to provide an intuitive interface that will simplify the process of configuring and running analyses. Stay tuned for updates on this exciting feature!
+- We are now providing only single frequency calculation. We will update the files to multiple frequency calculation in the future for more accurate results.
