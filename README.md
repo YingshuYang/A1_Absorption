@@ -39,5 +39,3 @@ If you utilize `A1_Absorption` for your research, please cite the following publ
 ## Future Developments
 We are committed to enhancing the usability of `A1_Absorption` and are currently working on developing a Graphical User Interface (GUI) to make the tool more accessible and user-friendly. Although the GUI is still under development, we aim to provide an intuitive interface that will simplify the process of configuring and running analyses. Stay tuned for updates on this exciting feature!
 
-## Feedback and Contributions
-We welcome feedback and contributions from the community. If you have suggestions or are interested in contributing to the development of the GUI or any other aspect of `A1_Absorption`, please feel free to contact us. Your input is invaluable in making this tool more effective for researchers around the globe.
