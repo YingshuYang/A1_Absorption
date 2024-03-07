@@ -22,13 +22,8 @@ from scipy.optimize import minimize
 
 
 ## =============================================================================
-## 1.Absorption calculation for a single frequency
+## 1.Inputs
 ## =============================================================================
-
-
-
-
-##########################################################################
 
 '''Enter the frequency of the laser of which you are interested (units:Hz)''' 
 frequency       = 374.74e12    
@@ -62,10 +57,9 @@ d4 = 0
 d5 = 0
 
 
-
-
-
-##########################################################################
+## =============================================================================
+## 2.Runniing of the code
+## =============================================================================
 
 
 number_of_thickness = 1
@@ -91,13 +85,11 @@ Absorp          = 1-reflection-transmission
 r,t             = change_Pt_thickness.trans_reflect(dnew,number_of_thickness)
 
 
-plt.figure('test')
-plt.plot(LAYER1,transmission,label = 'transmission')
-plt.plot(LAYER1,reflection,label = 'reflection')
-plt.plot(LAYER1,Absorption_total,label = 'absorption total')
-plt.plot(LAYER1,Absorption1,'--',label = 'absorption CoFeB')
-plt.ylim(0,1)
-plt.legend()
+
+
+## =============================================================================
+## 3. Result printing
+## =============================================================================
 
 print('Results:')
 print('Absorption_layer1 = ', Absorption1)
