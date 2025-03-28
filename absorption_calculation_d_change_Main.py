@@ -34,9 +34,9 @@ f_omega_single  = 10
 
 ''' Enter the dielectric constants for each layer for the frequency you entered above'''
 eps_Air         = cla2.epsilon(1,	0)                      # left most Air layer values n = 1, k = 0
-eps_1           = cla2.epsilon(3.8,	3.89)                   # Layer1 values n = x, k = y     
-eps_2           = cla2.epsilon(1.4608,	0.0013066)          # Layer2 values n = x, k = y    
-eps_3           = cla2.epsilon(1,	0)                      # Layer3 values n = x, k = y              
+eps_1           = cla2.epsilon(2.83,	0.1)               # Layer1 values n = x, k = y     
+eps_2           = cla2.epsilon(3.13,	0.5)               # Layer2 values n = x, k = y    
+eps_3           = cla2.epsilon(1,	0)               # Layer3 values n = x, k = y              
 eps_4           = cla2.epsilon(1,	0)                      # Layer4 values n = x, k = y                   
 eps_5           = cla2.epsilon(1,	0)                      # Layer5 values n = x, k = y 
 epsilon_optical = [eps_Air*8.85e-12,
@@ -51,9 +51,9 @@ mu              = 12.57e-7                                  #permeability (set a
 '''Enter the changing thickness of each layer (units:m):
    Note: if the layer thickness do not change, just set the dmin and dmax as the same thickness
 '''
-d1min = 0       ; d1max = 100e-9
-d2min = 0.3e-3  ; d2max = 0.3e-3
-d3min = 1e-9    ; d3max = 1e-9
+d1min = 6e-9    ; d1max = 6e-9
+d2min = 3e-9    ; d2max = 13e-9
+d3min = 0.5e-3  ; d3max = 0.5e-3
 d4min = 0       ; d4max = 0
 d5min = 0       ; d5max = 0
 
@@ -61,10 +61,10 @@ d5min = 0       ; d5max = 0
     1- the first layer
     2- the second layer and so on...(in the example case is 1)'''
     
-thickness_changing_layer = 1
+thickness_changing_layer = 2
 
 '''The resolution of the thikness you want'''
-number_of_thickness = 20
+number_of_thickness = 100
 
 ## =============================================================================
 ## 2.Runniing of the coe
@@ -98,18 +98,19 @@ r,t             = change_Pt_thickness.trans_reflect(dnew,number_of_thickness)
 ## =============================================================================
 ## 3. Result printing
 ## =============================================================================
-
+d[thickness_changing_layer] = d[thickness_changing_layer]*1e9
 plt.figure('Absorption change')
 plt.title('ART and absorption change in each layer')
-plt.plot(d[1],transmission,linewidth = 3,label = 'transmission')
-plt.plot(d[1],reflection,linewidth = 3,label = 'reflection')
-plt.plot(d[1],Absorption_total,linewidth = 3,label = 'absorption total')
-plt.plot(d[1],Absorption1,'--',label = 'absorption layer1')
-plt.plot(d[1],Absorption2,'--',label = 'absorption layer2')
-plt.xlabel('Thickness (m)')
+plt.plot(d[thickness_changing_layer],transmission,linewidth = 3,label = 'transmission')
+plt.plot(d[thickness_changing_layer],reflection,linewidth = 3,label = 'reflection')
+plt.plot(d[thickness_changing_layer],Absorption_total,linewidth = 3,label = 'absorption total')
+plt.plot(d[thickness_changing_layer],Absorption1,'--',label = 'absorption layer1')
+plt.plot(d[thickness_changing_layer],Absorption2,'--',label = 'absorption layer2')
+plt.xlabel('Thickness (nm)')
 plt.ylabel('Ratio')
 plt.ylim(-0.1,1.1)
 plt.legend()
+plt.show()
 
 print('Results:')
 print('Absorption_layer1 = ', Absorption1)

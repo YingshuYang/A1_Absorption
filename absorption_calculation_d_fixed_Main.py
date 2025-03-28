@@ -9,13 +9,8 @@ Created on Tue May  9 16:46:22 2023
 
 
 import numpy as np
-import matplotlib.pyplot as plt
-# import THz_emission_sim_class as cla
-# import class_absorption as cla2
 import absorption_calculation_class as cla2
-from scipy.interpolate import interp1d
 from math import pi
-from scipy.optimize import minimize
 
 
 
@@ -35,9 +30,9 @@ f_omega_single  = 10
 
 ''' Enter the dielectric constants for each layer for the frequency you entered above'''
 eps_Air         = cla2.epsilon(1,	0)                      # left most Air layer values n = 1, k = 0
-eps_1           = cla2.epsilon(3.8,	3.89)                   # Layer1 values n = x, k = y     
-eps_2           = cla2.epsilon(1.4608,	0.0013066)          # Layer2 values n = x, k = y    
-eps_3           = cla2.epsilon(1,	0)                      # Layer3 values n = x, k = y              
+eps_1           = cla2.epsilon(3.13,	4.76)               # Layer1 values n = x, k = y     
+eps_2           = cla2.epsilon(4.9,	5.48)               # Layer2 values n = x, k = y    
+eps_3           = cla2.epsilon(1.76,	0.00)               # Layer3 values n = x, k = y              
 eps_4           = cla2.epsilon(1,	0)                      # Layer4 values n = x, k = y                   
 eps_5           = cla2.epsilon(1,	0)                      # Layer5 values n = x, k = y 
 epsilon_optical = [eps_Air*8.85e-12,
@@ -45,14 +40,14 @@ epsilon_optical = [eps_Air*8.85e-12,
                    eps_2*8.85e-12,
                    eps_3*8.85e-12,
                    eps_4*8.85e-12,
-                   eps_5*8.85e-12]  #permittivity 
-mu              = 12.57e-7                                  #permeability set as constant
+                   eps_5*8.85e-12]                          #permittivity 
+mu              = 12.57e-7                                  #permeability (set as constant)
 
 
 '''Enter the thickness of each layer (units:m)'''
-d1 = 100e-9
-d2 = 0.3e-3
-d3 = 0
+d1 = 3e-9
+d2 = 6e-9
+d3 = 0.5e-3
 d4 = 0
 d5 = 0
 
